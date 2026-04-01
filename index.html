@@ -1,12 +1,745 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sandeep Iliger — Portfolio</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sandeep Iliger — Technical Lead</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #2a2a3a;
+    --accent: #c8a96e;
+    --accent2: #7b8cde;
+    --text: #e8e6e0;
+    --muted: #8a8a9a;
+    --highlight: #c8a96e22;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Subtle grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,169,110,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,169,110,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 4rem;
+    padding-top: 80px;
+    overflow: hidden;
+  }
+
+  .hero-orb {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123,140,222,0.12) 0%, transparent 70%);
+    right: -100px; top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .hero-orb2 {
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,169,110,0.1) 0%, transparent 70%);
+    left: 200px; bottom: 100px;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    max-width: 700px;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(200,169,110,0.3);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.9s 0.1s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.9s 0.2s ease both;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.9s 0.3s ease both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.9s 0.4s ease both;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    background: var(--accent);
+    color: #0a0a0f;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: #dfc07e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200,169,110,0.3);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 4rem;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.9s 0.5s ease both;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 6rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    height: 1px;
+    width: 40px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 3rem;
+  }
+
+  /* SKILLS GRID */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text);
+    transition: all 0.2s;
+    opacity: 0;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .skill-pill:hover {
+    border-color: var(--accent);
+    background: var(--highlight);
+    transform: translateY(-2px);
+    color: var(--accent);
+  }
+
+  .skill-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent2);
+    flex-shrink: 0;
+  }
+
+  /* EXPERIENCE TIMELINE */
+  .timeline {
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  .timeline-item {
+    padding-left: 2.5rem;
+    padding-bottom: 3.5rem;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 8px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(200,169,110,0.15);
+  }
+
+  .timeline-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-role {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  .timeline-company {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.05em;
+  }
+
+  .timeline-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .timeline-bullets li {
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: flex;
+    gap: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .timeline-bullets li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 0.02em;
+  }
+
+  /* CERTIFICATIONS & CONTACT */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover {
+    border-color: rgba(200,169,110,0.4);
+  }
+
+  .card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-text {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    font-size: 0.88rem;
+  }
+
+  .contact-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    color: var(--accent);
+  }
+
+  .contact-icon {
+    width: 36px; height: 36px;
+    background: var(--highlight);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1rem;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Stagger skill pills */
+  .skill-pill:nth-child(1) { animation-delay: 0.05s; }
+  .skill-pill:nth-child(2) { animation-delay: 0.1s; }
+  .skill-pill:nth-child(3) { animation-delay: 0.15s; }
+  .skill-pill:nth-child(4) { animation-delay: 0.2s; }
+  .skill-pill:nth-child(5) { animation-delay: 0.25s; }
+  .skill-pill:nth-child(6) { animation-delay: 0.3s; }
+  .skill-pill:nth-child(7) { animation-delay: 0.35s; }
+  .skill-pill:nth-child(8) { animation-delay: 0.4s; }
+  .skill-pill:nth-child(9) { animation-delay: 0.45s; }
+  .skill-pill:nth-child(10) { animation-delay: 0.5s; }
+  .skill-pill:nth-child(11) { animation-delay: 0.55s; }
+  .skill-pill:nth-child(12) { animation-delay: 0.6s; }
+
+  /* Stagger timeline */
+  .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+  .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+  .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+  .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+  .timeline-item:nth-child(5) { animation-delay: 0.5s; }
+  .timeline-item:nth-child(6) { animation-delay: 0.6s; }
+
+  /* Divider line */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin: 0 4rem;
+    max-width: calc(100% - 8rem);
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SI</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="about">
+  <div class="hero-orb"></div>
+  <div class="hero-orb2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Available · Bengaluru, India</div>
+    <h1>Sandeep<span>Iliger</span></h1>
+    <p class="hero-sub">Technical Lead at Eurofins specializing in C#/.NET and enterprise LIMS platforms. I build high-performance systems, lead engineering teams, and architect scalable solutions for mission-critical environments.</p>
+    <div class="hero-cta">
+      <a href="mailto:sandeep.iliger@gmail.com" class="btn-primary">↗ Get in Touch</a>
+      <a href="https://www.linkedin.com/in/sandeepiliger" target="_blank" class="btn-outline">LinkedIn Profile</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">13+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Years at Eurofins</div>
+      </div>
+      <div>
+        <div class="stat-num">Azure</div>
+        <div class="stat-label">MS Certified</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- EXPERTISE -->
+<section id="expertise">
+  <div class="section-label">Core Skills</div>
+  <h2 class="section-title">Technical Expertise</h2>
+  <div class="skills-grid">
+    <div class="skill-pill"><span class="skill-dot"></span>C# / .NET</div>
+    <div class="skill-pill"><span class="skill-dot"></span>ASP.NET Core</div>
+    <div class="skill-pill"><span class="skill-dot"></span>RESTful Web API</div>
+    <div class="skill-pill"><span class="skill-dot"></span>WCF / SOA</div>
+    <div class="skill-pill"><span class="skill-dot"></span>WPF Desktop</div>
+    <div class="skill-pill"><span class="skill-dot"></span>SQL Server</div>
+    <div class="skill-pill"><span class="skill-dot"></span>Azure DevOps</div>
+    <div class="skill-pill"><span class="skill-dot"></span>CI/CD Pipelines</div>
+    <div class="skill-pill"><span class="skill-dot"></span>Design Patterns</div>
+    <div class="skill-pill"><span class="skill-dot"></span>HL7 / DICOM</div>
+    <div class="skill-pill"><span class="skill-dot"></span>Agile / Scrum</div>
+    <div class="skill-pill"><span class="skill-dot"></span>Team Leadership</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Career</div>
+  <h2 class="section-title">Work Experience</h2>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-period">May 2025 — Present</div>
+      <div class="timeline-role">Technical Lead</div>
+      <div class="timeline-company">Eurofins</div>
+      <ul class="timeline-bullets">
+        <li>Lead design and development of large-scale LIMS/Genomics platforms using .NET, Web API, WCF, and Azure DevOps.</li>
+        <li>Drive engineering best practices through mentoring, code reviews, and setting technical standards.</li>
+        <li>Build optimized integration workflows across multiple systems for improved efficiency.</li>
+        <li>Oversee CI/CD pipelines, regression automation, and deployment processes.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">May 2022 — June 2025</div>
+      <div class="timeline-role">Module Lead</div>
+      <div class="timeline-company">Eurofins</div>
+      <ul class="timeline-bullets">
+        <li>Managed end-to-end delivery of critical modules including planning, design reviews, and sprint execution.</li>
+        <li>Built and optimized backend services, integrations, and workflows for enterprise LIMS applications.</li>
+        <li>Coordinated with QA, DevOps, and business teams to ensure smooth, defect-free releases.</li>
+        <li>Improved system performance and stability via refactoring and proactive optimization.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">Oct 2019 — May 2022</div>
+      <div class="timeline-role">Principal Software Engineer</div>
+      <div class="timeline-company">Eurofins</div>
+      <ul class="timeline-bullets">
+        <li>Designed and developed high-performance APIs, backend services, and distributed components.</li>
+        <li>Built reusable frameworks and automated data pipelines for internal systems.</li>
+        <li>Led POCs, evaluated new technologies, and provided architectural recommendations.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">Apr 2017 — Oct 2019</div>
+      <div class="timeline-role">Senior Software Engineer</div>
+      <div class="timeline-company">Eurofins</div>
+      <ul class="timeline-bullets">
+        <li>Developed complex features using .NET, WPF, WCF, Web API, and SQL Server.</li>
+        <li>Participated in sprint planning, estimation, and code reviews.</li>
+        <li>Improved database scalability through tuning, indexing, and schema enhancements.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">Oct 2015 — Mar 2017</div>
+      <div class="timeline-role">Software Engineer</div>
+      <div class="timeline-company">Eurofins</div>
+      <ul class="timeline-bullets">
+        <li>Developed E-commerce B2B applications for the Genomics business unit.</li>
+        <li>Built integrations with third-party systems and internal tools.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">Apr 2012 — Oct 2015</div>
+      <div class="timeline-role">Software Application Developer</div>
+      <div class="timeline-company">Opto Circuits India</div>
+      <ul class="timeline-bullets">
+        <li>Built medical diagnostic software using ASP.NET and WinForms.</li>
+        <li>Integrated lab instruments with Web APIs and implemented UI improvements.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTS & LANGUAGES -->
+<section>
+  <div class="section-label">Credentials</div>
+  <h2 class="section-title">Certifications & Languages</h2>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-icon">🏅</div>
+      <div class="card-title">Microsoft Certified: Azure Fundamentals</div>
+      <p class="card-text">Foundational certification validating knowledge of cloud services and how those services are provided with Microsoft Azure.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <div class="card-title">Languages</div>
+      <p class="card-text">English · Kannada · Hindi<br><br>US B1 Visa valid until 2029.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Connect</div>
+  <h2 class="section-title">Get in Touch</h2>
+  <p style="color: var(--muted); max-width: 480px; margin-bottom: 0.5rem; font-size: 0.95rem;">Open to discussing new opportunities, collaborations, or technical challenges. Feel free to reach out.</p>
+  <div class="contact-grid">
+    <a href="mailto:sandeep.iliger@gmail.com" class="contact-item">
+      <div class="contact-icon">✉</div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.2rem;">Email</div>
+        sandeep.iliger@gmail.com
+      </div>
+    </a>
+    <a href="tel:+918147281259" class="contact-item">
+      <div class="contact-icon">📞</div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.2rem;">Phone</div>
+        +91 81472 81259
+      </div>
+    </a>
+    <a href="https://www.linkedin.com/in/sandeepiliger" target="_blank" class="contact-item">
+      <div class="contact-icon">💼</div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.2rem;">LinkedIn</div>
+        /in/sandeepiliger
+      </div>
+    </a>
+    <div class="contact-item">
+      <div class="contact-icon">📍</div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.2rem;">Location</div>
+        Bengaluru, Karnataka 560064
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Sandeep Iliger · Technical Lead · Built with care</p>
+</footer>
+
+</body>
 </html>
